@@ -1,3 +1,17 @@
 html, body{
 	height: 100%;
 }
+
+main{
+	overflow: auto;
+}
+
+.back{
+	background-image: url("../img/poa.jpg");
+	background-repeat: no-repeat;
+	background-size: cover;
+	opacity: 0.9;
+	height: 93%;
+	-webkit-filter: brightness(90%) contrast(95%);
+	filter: brightness(90%) contrast(95%);
+}

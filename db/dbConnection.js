@@ -45,34 +45,6 @@ DB.prototype.close = function(){
 	}
 }
 
-DB.prototype.getPClist = function(coll){
-	var _this = this;
-
-	return new Promise(function (resolve, reject){
-		_this.db.collection(coll, {strict: true}, function(error, collection){
-			if (error){
-				console.log("Could not access collection: " + error.message);
-				reject(error.message);
-			}
-			else{
-				collection.find().toArray(function(err, result){
-					if(err){
-						console.log("Error: " + err.message);
-						reject(err.message);
-					}
-					else{
-						var pcs = result.map(function(pc){
-							return {'hostname': pc.hostname, 'datatype': pc.datatype };
-						});
-						// console.log(pcs);
-						resolve(pcs);	
-					}
-				});
-			}
-		});
-	});
-}
-
 DB.prototype.getAllData = function(json){
 	var _this = this;
 
