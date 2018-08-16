@@ -1,7 +1,7 @@
-const express = require('express');
-const path = require('path');
-const routes = express.Router();
-
+const express = require('express'),
+	path = require('path'),
+	nodemailer = require('nodemailer'),
+	routes = express.Router();
 
 routes.get('/', function(req, res){
 	res.render("index");
@@ -25,6 +25,35 @@ routes.get('/stats', function(req, res){
 
 routes.get('/contact', function(req, res){
 	res.render('contact')
-})
+});
+
+routes.post('/contact', function(req, res){
+	
+	let transporter = nodemailer.createTransport({
+		host: 'smtp.gmail.com',
+		port: 465,
+		secure: true,
+		auth: {
+			user: 'xxx@xx.com',
+			pass: 'xxx'
+		}
+	});
+	
+	let mailOptions = {
+		from: req.body.from,
+		subject: req.body.subject,
+		text: req.body.message,
+	};
+
+	transporter.sendMail(mailOptions, (error, info)=>{
+		if(error){
+			res.render('contact');
+		}
+		else{
+			res.render('contact');
+		}
+	});
+});
+
 
 module.exports = routes;

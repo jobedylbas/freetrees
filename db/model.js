@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const mongoose = require('mongoose'),
+	Schema = mongoose.Schema;
 
 const treeSchema = new Schema({
 	_id: Number,

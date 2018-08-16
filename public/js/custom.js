@@ -1,8 +1,11 @@
-var dafaultCenter = [-30.9000, -51.1899];
-var defaultZoom = 13;
-$(document).ready(function (){
-	var mymap = L.map('map').setView([-30.0016, -51.1899], 13);
+const dafaultCenter = [-30.03, -51.19],
+	defaultZoom = 13;
 
+$(document).ready(function (){
+	var mymap = L.map('map');
+	
+	setTimeout(function(){mymap.setView([-30.03, -51.19], 13)}, 2000);
+	
 	L.tileLayer( 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     	subdomains: ['a','b','c']
