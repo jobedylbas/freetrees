@@ -6,7 +6,6 @@ const treeSchema = new Schema({
 	name: String,
 	date: {type: Date, default: Date.now},
 	type: String,
-	explorer: String,
 	harvesttime: String,
 	lat: Number,
 	long: Number,

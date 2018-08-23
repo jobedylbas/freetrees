@@ -15,3 +15,7 @@ main{
 	-webkit-filter: brightness(90%) contrast(95%);
 	filter: brightness(90%) contrast(95%);
 }
+
+.stats-chart{
+	height: 500px !important;
+}

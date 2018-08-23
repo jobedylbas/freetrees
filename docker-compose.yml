@@ -1,16 +1,16 @@
 version: '2.2'
 services:
     app:
-        container_name: ft_node
-        restart: always
-        build: ./
-        command: node app.js
-        volumes:
-          - .:/usr/src/app/
-        ports:
-          - 3000:3000
-        links:
-          - database
+      container_name: ft_node
+      restart: always
+      build: ./
+      command: node app.js
+      volumes:
+        - .:/usr/src/app/
+      ports:
+        - 3000:3000
+      links:
+        - database
     database:
       container_name: tree_container
       image: mongo:latest
@@ -18,3 +18,6 @@ services:
         - ./data:/data/db
       ports:
         - "27017:27017"
+      environment:
+        - MONGODB_ADMIN_USER=root
+        - MONGODB_ADMIN_PASS=pass

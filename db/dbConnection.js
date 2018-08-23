@@ -45,61 +45,27 @@ DB.prototype.close = function(){
 	}
 }
 
-DB.prototype.getAllData = function(json){
+DB.prototype.getAllData = function(coll){
 	var _this = this;
 
 	return new Promise(function (resolve, reject){
-		_this.db.collection(json.pccoll, {strict: true}, function(error, collection){
+		_this.db.collection(coll, {strict: true}, function(error, collection){
 			if (error){
 				console.log("Could not access collection: " + error.message);
 				reject(error.message);
 			}
 			else{
-				collection.find().sort({$natural: -1}).toArray(function(err, result){
+				collection.find().toArray(function(err, result){
 					if(err){
 						console.log("Error: " + err.message);
 						reject(err.message);
 					}
 					else{
-						var data = [];
-						var timestamp = [];
+						data = []
 						result.forEach(function(item){
-							data.push(item[json.datatype][json.datakey]);
-							timestamp.push(item.timestamp);
+							data.push({'lat': item.lat, 'long': item.long});
 						});
-						// console.log({"timestamp": timestamp, "data": data});
-						resolve({"timestamp": timestamp, "data": data});	
-					}
-				});
-			}
-		});
-	});
-}
-
-DB.prototype.getNData = function(json){
-	var _this = this;
-
-	return new Promise(function (resolve, reject){
-		_this.db.collection(json.pccoll, {strict: true}, function(error, collection){
-			if (error){
-				console.log("Could not access collection: " + error.message);
-				reject(error.message);
-			}
-			else{
-				collection.find().sort({ $natural: -1}).limit(json.granularity).toArray(function(err, result){
-					if(err){
-						console.log("Error: " + err.message);
-						reject(err.message);
-					}
-					else{
-						var data = [];
-						var timestamp = [];
-						result.forEach(function(item){
-							data.push(item[json.datatype][json.datakey]);
-							timestamp.push(item.timestamp);
-						});
-						// console.log({"timestamp": timestamp, "data": data});
-						resolve({"timestamp": timestamp, "data": data});	
+						resolve(data);	
 					}
 				});
 			}

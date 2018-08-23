@@ -1,7 +1,9 @@
 const express = require('express'),
 	path = require('path'),
 	nodemailer = require('nodemailer'),
-	routes = express.Router();
+	routes = express.Router(),
+	DB = require(path.resolve(path.join(__dirname, '..', 'db', 'dbConnection'))),
+	config = require(path.resolve(path.join(__dirname, 'config.js')));
 
 routes.get('/', function(req, res){
 	res.render("index");
@@ -29,31 +31,72 @@ routes.get('/contact', function(req, res){
 
 routes.post('/contact', function(req, res){
 	
-	let transporter = nodemailer.createTransport({
-		host: 'smtp.gmail.com',
-		port: 465,
-		secure: true,
-		auth: {
-			user: 'xxx@xx.com',
-			pass: 'xxx'
-		}
+	const transporter = nodemailer.createTransport({
+	    host: 'smtp.ethereal.email',
+	    port: 587,
+	    secure: false,
+	    auth: {
+	        user: 'wbvn3gi6by4xk6f5@ethereal.email',
+	        pass: 'HjY31nvE5KEwg3qVff'
+	    }
 	});
 	
 	let mailOptions = {
 		from: req.body.from,
+		to: 'jobe.dylbas@gmail.com',
 		subject: req.body.subject,
 		text: req.body.message,
 	};
-
-	transporter.sendMail(mailOptions, (error, info)=>{
-		if(error){
-			res.render('contact');
+	transporter.verify(function(err, success) {
+		if(err){
+			console.log(err);
 		}
 		else{
-			res.render('contact');
+			transporter.sendMail(mailOptions, (error, info)=>{
+				if(error){
+					console.log(error);
+				}
+				else{
+					console.log('email sent');
+				}
+			});
 		}
+		res.render('contact');
 	});
-});
+})	
 
+routes.get('/get_trees', function(req, res){
+	let db = new DB;
+	db.connect(config.defaultUri, config.defaultDatabase)
+	.then(
+		function(){
+			return db.getAllData(config.defaultCol);
+		}
+	)
+	.then(
+		function(docs){
+			return {
+				"succes": true,
+				"trees": docs,
+				"error": ""
+			};
+		},
+		function(error){
+			console.log(error);
+			return {
+				"succes": false,
+				"trees": null,
+				"error": error
+			}; 
+		}
+	)
+	.then(
+		function(result){
+			db.close();
+			res.send(result);
+		}
+	)
+
+})
 
 module.exports = routes;
