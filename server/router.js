@@ -6,11 +6,11 @@ const express = require('express'),
 	config = require(path.resolve(path.join(__dirname, 'config.js')));
 
 routes.get('/', function(req, res){
-	res.render("index");
+	res.render('index');
 });
 
 routes.post('/busca', function(req, res){
-	res.json({map: "/busca"});
+	res.json({map: '/busca'});
 });
 
 routes.get('/download', function(req, res){
@@ -76,17 +76,17 @@ routes.get('/get_trees', function(req, res){
 	.then(
 		function(docs){
 			return {
-				"succes": true,
-				"trees": docs,
-				"error": ""
+				'success': true,
+				'trees': docs,
+				'error': ''
 			};
 		},
 		function(error){
 			console.log(error);
 			return {
-				"succes": false,
-				"trees": null,
-				"error": error
+				'success': false,
+				'trees': null,
+				'error': error
 			}; 
 		}
 	)
@@ -97,6 +97,41 @@ routes.get('/get_trees', function(req, res){
 		}
 	)
 
-})
+});
+
+
+routes.get('/chart_data', function(req, res){
+	let db = new DB;
+	db.connect(config.defaultUri, config.defaultDatabase)
+	.then(
+		function(){
+			return db.mostFreqPlants(config.defaultCol);
+		}
+	)
+	.then(
+		function(count){
+			return {
+				'success': true,
+				'list': count,
+				'error': ''
+			};
+		},
+		function(error){
+			console.log(error);
+			return {
+				'success': false,
+				'list': 0,
+				'error': error
+			}
+		}
+	)
+	.then(
+		function(result){
+			db.close();
+			res.send(result);
+		}
+	)
+});
+
 
 module.exports = routes;

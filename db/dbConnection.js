@@ -24,7 +24,7 @@ DB.prototype.connect = function(uri, dbName){
 					resolve();
 				},
 				function(err){
-					console.log("Error conecting: " + err.message);
+					console.log('Error conecting: ' + err.message);
 
 					reject(err.message);
 				}
@@ -39,7 +39,7 @@ DB.prototype.close = function(){
 		.then(
 			function(){},
 			function(error){
-				console.log("Failed to close the database: " + error.message);
+				console.log('Failed to close the database: ' + error.message);
 			}
 		)
 	}
@@ -51,13 +51,13 @@ DB.prototype.getAllData = function(coll){
 	return new Promise(function (resolve, reject){
 		_this.db.collection(coll, {strict: true}, function(error, collection){
 			if (error){
-				console.log("Could not access collection: " + error.message);
+				console.log('Could not access collection: ' + error.message);
 				reject(error.message);
 			}
 			else{
 				collection.find().toArray(function(err, result){
 					if(err){
-						console.log("Error: " + err.message);
+						console.log('Error: ' + err.message);
 						reject(err.message);
 					}
 					else{
@@ -68,6 +68,50 @@ DB.prototype.getAllData = function(coll){
 						resolve(data);	
 					}
 				});
+			}
+		});
+	});
+}
+
+DB.prototype.mostFreqPlants = function(coll){
+	var _this = this;
+	return new Promise(function (resolve, reject){
+		_this.db.collection(coll, {strict: true}, function(error, collection){
+			if(error){
+				console.log('Could not access collection: ' + error.message);
+				reject(error.message);
+			}
+			else{
+				collection.aggregate([
+					{
+						$group:{
+							_id: '$name', count:{$sum:1}
+						},
+
+					},
+					{
+						$sort:{
+							'count': -1
+						}
+					}
+				]).toArray(function(err, result){
+					if(error){
+						console.log('Error sampling data: '+ error.message);
+						reject(error.message);
+					}
+					else{
+						let count = 0;
+						for (data in result){
+							count = count + result[data].count;
+						}
+
+						if(result.length > 5)
+							result.slice(0,6);
+
+						result.push({'_id': 'all', 'count': count});
+						resolve(result);
+					}
+				})
 			}
 		});
 	});

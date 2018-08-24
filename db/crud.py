@@ -48,15 +48,14 @@ def conn(string):
 def create_tree():
 	new_tree = {}
 	new_tree['name'] = input('Tree name: ')
-	new_tree['type'] = input('Tree type: ')
-	while(new_tree['type'] not in ['medicinal', 'fruit']):
-		new_tree['type'] = input('Wrong type, try again: ')
+	new_tree['cientific_name'] = input('Cientific name: ')
 	new_tree['lat'] = float(input('Tree lattitude: '))
 	new_tree['long'] = float(input('Tree longitude: '))
 	new_tree['addres'] = input('Tree addres: ')
 	new_tree['harvesttime'] = input('Harvest time: ')
 	new_tree['link'] = input('Wiki url: ')
 	new_tree['date'] = str(datetime.datetime.now())
+	new_tree['type'] = 'fruit'
 	pprint.pprint(new_tree)
 	return new_tree
 

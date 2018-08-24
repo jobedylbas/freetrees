@@ -36,60 +36,61 @@ $(document).ready(function (){
 
 
 	if(window.location.pathname == '/stats'){
-        const green = 'rgb(5, 140, 50)',
-          black_green = 'rgb(3, 61, 18)',
-          blue = 'rgb(153, 221, 255)',
-          red = 'rgb(255, 51, 51)',
-          orange = 'rgb(255, 153, 0)',
-          pink = 'rgb(255, 102, 102)',
-          yellow = 'rgb(255, 255, 153)',  
-          black = 'rgb(0,0,0)',
-          purple = 'rgb(204, 0, 204)';
+        const colors = ['rgb(5, 140, 50)', 'rgb(3, 61, 18)', 'rgb(153, 221, 255)', 'rgb(255, 51, 51)',
+          'rgb(255, 153, 0)', 'rgb(255, 102, 102)', 'rgb(255, 255, 153)', 'rgb(204, 0, 204)'];
+        const black = 'rgb(0,0,0)';
 
 		var ctx = document.getElementById('plant-chart').getContext('2d');
-		var chart = new Chart(ctx, {
-		    // The type of chart we want to create
-		    type: 'bar',
-		    // The data for our dataset
-		    data: {
-		        labels: ["Cataloged Plants", "Cataloged Fruits", "Cataloged Medicinal", 'Lima', 'blabla', 'blabla2', 'blabla3', 'blabla4'],
-		        datasets: [{
-		            backgroundColor: [black_green, red, blue, yellow, pink, orange, purple, green],
-		            borderColor: '',
-		            data: [10, 10, 5, 2, 20, 30, 45, 22],
-		        }]
-		    },
+        
+        $.ajax({
+            url: '/chart_data',
+            method: 'GET',
+            success: function(data){
+                var chart = new Chart(ctx, {
+                    // The type of chart we want to create
+                    type: 'bar',
+                    // The data for our dataset
+                    data: {
+                        labels: ['Total plants'].concat(data.list.slice(0, -1).map(item => item['_id'])),
+                        datasets: [{
+                            backgroundColor: colors.slice(0, data.list.length),
+                            data: [data.list[0].count].concat(data.list.slice(0, -1).map(item => item.count))
+                        }]
+                    },
 
-		    // Configuration options go here
-		    options: {
-		    	legend: {
-		    		display: false,
-		    	},
-		    	scales: {
-            yAxes: [{
-              scaleLabel: {
-                display: true,
-                labelString: 'Number of plants',
-                fontSize: 18,
-                fontColor: black
-              }
-            }],
-            xAxes: [{
-              barPercentage: 0.5,
-              scaleLabel: {
-                display: true,
-                labelString: 'Plants',
-                fontSize: 18,
-                fontColor: black
-              },
-              ticks:{
-                fontSize: 16
-              }
-            }]
-          },
-		    	maintainAspectRatio: false,
-          responsive: true
-		    }
-		});
+                    // Configuration options go here
+                    options: {
+                        legend: {
+                            display: false,
+                        },
+                        scales: {
+                    yAxes: [{
+                      scaleLabel: {
+                        display: true,
+                        labelString: 'Number of plants',
+                        fontSize: 18,
+                        fontColor: black
+                      }
+                    }],
+                    xAxes: [{
+                      barPercentage: 0.5,
+                      scaleLabel: {
+                        display: true,
+                        labelString: 'Plants',
+                        fontSize: 18,
+                        fontColor: black
+                      },
+                      ticks:{
+                        fontSize: 16
+                      }
+                    }]
+                  },
+                        maintainAspectRatio: false,
+                  responsive: true
+                    }
+                });
+            }
+        });
+
 	}
 });
