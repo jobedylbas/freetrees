@@ -117,4 +117,34 @@ DB.prototype.mostFreqPlants = function(coll){
 	});
 }
 
+DB.prototype.getInfo = function(req, coll){
+	var _this = this;
+	return new Promise(function (resolve, reject){
+		_this.db.collection(coll, {strict: true}, function(error, collection){
+			if(error){
+				console.log('Could not access collection: ' + error.message);
+				reject(error.message);
+			}
+			else{
+				collection.find({}, {lat: req.lat, long: req.long}).toArray(function(err, result){
+					if(error){
+						console.log('Error finding data: '+ error.message);
+						reject(error.message);
+					}
+					else{
+						resolve(
+							{
+								'name': result[0].name,
+								'harvesttime': result[0].harvesttime,
+								'cientificname': 'lola',
+								'link': result[0].link
+							}
+						);
+					}
+				})
+			}
+		});
+	});
+}
+
 module.exports = DB;

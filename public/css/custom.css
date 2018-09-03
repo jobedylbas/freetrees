@@ -19,3 +19,19 @@ main{
 .stats-chart{
 	height: 500px !important;
 }
+
+.plant-name{
+	font-size: 1rem;
+	margin-bottom: 0% !important;
+}
+
+.plant-cname{
+	font-size: 0.8rem;
+	margin-top: 0% !important;
+	margin-bottom: 0% !important;
+}
+
+.plant-info{
+	font-size: 0.8rem;
+	margin-top: 10px !important;
+}

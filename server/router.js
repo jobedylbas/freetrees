@@ -26,7 +26,7 @@ routes.get('/stats', function(req, res){
 });
 
 routes.get('/contact', function(req, res){
-	res.render('contact')
+	res.render('contact');
 });
 
 routes.post('/contact', function(req, res){
@@ -132,6 +132,51 @@ routes.get('/chart_data', function(req, res){
 		}
 	)
 });
+
+routes.post('/get_info', function(req, res){
+	let db = new DB;
+	db.connect(config.defaultUri, config.defaultDatabase)
+	.then(
+		function(){
+			return db.getInfo(req, config.defaultCol);
+		}
+	)
+	.then(
+		function(info){
+			// console.log(info);
+			return {
+				'success': true,
+				'list': info,
+				'error': ''
+			};
+		},
+		function(error){
+			console.log(error);
+			return {
+				'success': false,
+				'list': {
+					'name': '',
+					'harvesttime': '',
+					'cientificname': '',
+					'link': ''
+				},
+				'error': error
+			}
+		}
+	)
+	.then(
+		function(result){
+			// console.log(result.list);
+			db.close();
+			res.render('popup', result);
+		}
+	)
+});
+
+routes.get('*', function(req, res){
+  res.render('404');
+});
+
 
 
 module.exports = routes;
