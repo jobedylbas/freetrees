@@ -53,7 +53,7 @@ $(document).ready(function (){
     }
 
 
-	if(window.location.pathname == '/'){
+	if(window.location.pathname === '/'){
         $('#home-link').addClass('active');
         $('#home-link').siblings().removeClass('active');
 		
