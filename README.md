@@ -5,7 +5,7 @@
 
 ## About
 
-Inspired by [New York City Street Tree Map](https://tree-map.nycgovparks.org/) and [Projeto Pró-Frutas Nativas](http://frutaspoa.inga.org.br/) de Porto Alegre this project has the intention to map fruit plants on the public roads of Porto Alegre.
+Inspired by [New York City Street Tree Map](https://tree-map.nycgovparks.org/) and [Projeto Pró-Frutas Nativas](http://frutaspoa.inga.org.br/) this project has the intention to map fruit plants on the public roads of Porto Alegre.
 
 This project intends to provide information about the local flora and contribute to the local environmental education. 
 
@@ -25,6 +25,7 @@ Also, we believe that if you don't know your city, you cannot help to improve it
 ```
 docker-compose up --build
 ```
+- Wait until the complete creation of Docker containers
 - Then your are ready to access your freetrees app on:
 ```
 www.localhost.com/3000
