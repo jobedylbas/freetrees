@@ -4,7 +4,7 @@ services:
       container_name: ft_node
       restart: always
       build: ./
-      command: node app.js
+      command: bash -c "npm install && node app.js"
       volumes:
         - .:/usr/src/app/
       ports:
