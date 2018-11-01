@@ -17,6 +17,8 @@ main{
 }
 
 .stats-chart{
+	display: inline-block;
+	width: 500px !important;
 	height: 500px !important;
 }
 
@@ -28,7 +30,7 @@ main{
 .plant-cname{
 	font-size: 0.8rem;
 	margin-top: 0% !important;
-	margin-bottom: 0% !important;
+	margin-bottom: 3% !important;
 }
 
 .plant-info{

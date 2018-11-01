@@ -1,6 +1,9 @@
+// Global constants and variables
+
 const dafaultCenter = [-30.03, -51.19],
 	defaultZoom = 13;
 
+// Function to markers events
 const onMarkerClick = function(e){
     let popup = e.target.getPopup();
     console.log(popup);
@@ -15,7 +18,8 @@ const onMarkerClick = function(e){
     })
 }
 
-const getTrees = function(map){
+// Function that add the trees on map
+const putTrees = function(map){
     $.ajax({
         url: '/get_trees',
         method: 'GET',
@@ -35,6 +39,8 @@ const getTrees = function(map){
 
 
 $(document).ready(function (){
+
+    // Add navbar highlight by url
     switch(window.location.pathname){
         case '/download':
             $('#download-link').addClass('active');
@@ -52,7 +58,7 @@ $(document).ready(function (){
         break;
     }
 
-
+    // Home
 	if(window.location.pathname === '/'){
         $('#home-link').addClass('active');
         $('#home-link').siblings().removeClass('active');
@@ -65,72 +71,72 @@ $(document).ready(function (){
 	    	subdomains: ['a','b','c']
 		}).addTo( mymap );
 
+        // Resize the map on screen resize
 		$(window).on("resize", function () { $("#map").height($(window).height()-$("#navbar").height());}).trigger("resize");
 
-        getTrees(mymap);
+        // Add the trees on map
+        putTrees(mymap);
 	}
 
 	$(window).on("resize", function () { $("#main").height($(window).height()-$("#navbar").height());}).trigger("resize");
 
 
-
+    // Stats
 	if(window.location.pathname == '/stats'){
         $('#stats-link').addClass('active');
         $('#stats-link').siblings().removeClass('active');
 
-        const colors = ['rgb(5, 140, 50)', 'rgb(3, 61, 18)', 'rgb(153, 221, 255)', 'rgb(255, 51, 51)',
-          'rgb(255, 153, 0)', 'rgb(255, 102, 102)', 'rgb(255, 255, 153)', 'rgb(204, 0, 204)'];
-        const black = 'rgb(0,0,0)';
+        const colors = ['rgb(5, 140, 50)']
 
-		let ctx = document.getElementById('plant-chart').getContext('2d');
+        let canvas = document.getElementById('plant-chart'); 
+		let ctx = canvas.getContext('2d');
         
+        // Create the chart with plants
         $.ajax({
             url: '/chart_data',
             method: 'GET',
             success: function(data){
-                var chart = new Chart(ctx, {
+                let chart = new Chart(ctx, {
                     // The type of chart we want to create
-                    type: 'bar',
+                    type: 'doughnut',
+                    
                     // The data for our dataset
                     data: {
-                        labels: ['Total plants'].concat(data.list.slice(0, -1).map(item => item['_id'])),
+                        labels: data.list.map(item => item['_id']),
                         datasets: [{
                             backgroundColor: colors.slice(0, data.list.length),
-                            data: [data.list[0].count].concat(data.list.slice(0, -1).map(item => item.count))
+                            data: data.list.map(item => item.count)
                         }]
                     },
 
                     // Configuration options go here
                     options: {
                         legend: {
-                            display: false,
+                            display: true,
                         },
-                        scales: {
-                    yAxes: [{
-                      scaleLabel: {
-                        display: true,
-                        labelString: 'Number of plants',
-                        fontSize: 18,
-                        fontColor: black
-                      }
-                    }],
-                    xAxes: [{
-                      barPercentage: 0.5,
-                      scaleLabel: {
-                        display: true,
-                        labelString: 'Plants',
-                        fontSize: 18,
-                        fontColor: black
-                      },
-                      ticks:{
-                        fontSize: 16
-                      }
-                    }]
-                  },
                         maintainAspectRatio: false,
-                  responsive: true
+                        responsive: true
                     }
                 });
+            
+                // Add chart event
+                canvas.onclick = function(e){
+                    let activePoint = chart.getElementAtEvent(e);
+
+                    if(activePoint[0]){
+                        let key = activePoint[0]['_chart'].config.data.labels[activePoint[0]['_index']];
+                        $.ajax({
+                            url: '/get_info',
+                            method: 'POST',
+                            dataType: 'json',
+                            data: {'key': key},
+                            success: function(data){
+                                console.log(data);
+                                getElementById('plant-title').textContent = key;
+                            }
+                        })
+                    }
+                }
             }
         });
 

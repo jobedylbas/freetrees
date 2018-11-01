@@ -56,6 +56,7 @@ def create_tree():
 	new_tree['link'] = input('Wiki url: ')
 	new_tree['date'] = str(datetime.datetime.now())
 	new_tree['type'] = 'fruit'
+	new_tree['color'] = input('Color: ')
 	pprint.pprint(new_tree)
 	return new_tree
 

@@ -45,7 +45,7 @@ DB.prototype.close = function(){
 	}
 }
 
-DB.prototype.getAllData = function(coll){
+DB.prototype.getAllLocations = function(coll){
 	var _this = this;
 
 	return new Promise(function (resolve, reject){
@@ -73,7 +73,7 @@ DB.prototype.getAllData = function(coll){
 	});
 }
 
-DB.prototype.mostFreqPlants = function(coll){
+DB.prototype.getFreqPlants = function(coll){
 	var _this = this;
 	return new Promise(function (resolve, reject){
 		_this.db.collection(coll, {strict: true}, function(error, collection){
@@ -105,10 +105,9 @@ DB.prototype.mostFreqPlants = function(coll){
 							count = count + result[data].count;
 						}
 
-						if(result.length > 5)
-							result.slice(0,6);
+						if(result.length > 7)
+							result.slice(0,7);
 
-						result.push({'_id': 'all', 'count': count});
 						resolve(result);
 					}
 				})

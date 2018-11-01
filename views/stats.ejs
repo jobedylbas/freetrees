@@ -13,8 +13,18 @@
 				  <div class="card-body row">
 				    <div class="col pl-0 text-justify">
 				    	<h2 class="card-title">Stats</h2>
-				    	<div class="card-text">
-				    		<canvas class="pt-4 stats-chart" id="plant-chart"></canvas>
+				    	<div class="card-text row">
+				    		<div class="float-left" id="container-chart">
+				    			<canvas class="stats-chart" id="plant-chart"></canvas>
+				    		</div>
+				    		<div class="col-sm float-right" id="plant-chart-info">
+				    			<h3 class="plant-title" id="plant-title">Choose a plant</h3>
+				    			<h4 class="text-muted plant-cname"><i></i></h4>
+				    			<p class="plant-desc"></p>
+				    			<a href="#" class="plant-wiki"></a>
+				    			<br /><br />
+				    			<img class="d-none" src="#"> 
+				    		</div>
 					    </div>
 				    </div>
 				  </div>

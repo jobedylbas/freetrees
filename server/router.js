@@ -70,7 +70,7 @@ routes.get('/get_trees', function(req, res){
 	db.connect(config.defaultUri, config.defaultDatabase)
 	.then(
 		function(){
-			return db.getAllData(config.defaultCol);
+			return db.getAllLocations(config.defaultCol);
 		}
 	)
 	.then(
@@ -105,7 +105,7 @@ routes.get('/chart_data', function(req, res){
 	db.connect(config.defaultUri, config.defaultDatabase)
 	.then(
 		function(){
-			return db.mostFreqPlants(config.defaultCol);
+			return db.getFreqPlants(config.defaultCol);
 		}
 	)
 	.then(
