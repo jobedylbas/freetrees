@@ -61,7 +61,7 @@ DB.prototype.getAllLocations = function(coll){
 						reject(err.message);
 					}
 					else{
-						data = []
+						data = [];
 						result.forEach(function(item){
 							data.push({'lat': item.lat, 'long': item.long});
 						});
@@ -126,19 +126,25 @@ DB.prototype.getInfo = function(req, coll){
 			}
 			else{
 				collection.find({}, {lat: req.lat, long: req.long}).toArray(function(err, result){
-					if(error){
-						console.log('Error finding data: '+ error.message);
-						reject(error.message);
+					if(err){
+						console.log('Error finding data: '+ err.message);
+						reject(err.message);
 					}
 					else{
-						resolve(
-							{
-								'name': result[0].name,
-								'harvesttime': result[0].harvesttime,
-								'cientificname': 'lola',
-								'link': result[0].link
-							}
-						);
+						console.log(result)
+						if(result.length === 0){
+							reject('Empty search.')
+						}
+						else{
+							resolve(
+								{
+									'name': result[0].name,
+									'harvesttime': result[0].harvesttime,
+									'cientificname': result[0].scientficname,
+									'link': result[0].link
+								}
+							);	
+						}
 					}
 				})
 			}

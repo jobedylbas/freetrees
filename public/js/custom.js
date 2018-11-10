@@ -14,6 +14,9 @@ const onMarkerClick = function(e){
         data: {'lat': popup.getLatLng().lat, 'long': popup.getLatLng().lng},
         success: function(result){
             popup.setContent(result);
+        },
+        error: function(){
+            popup.closePopup();
         }
     })
 }

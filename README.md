@@ -27,7 +27,7 @@ docker-compose up --build
 ```
 - Then your are ready to access your freetrees app on:
 ```
-www.localhost.com/3000
+www.localhost.com:3000
 ```
 
 ## Adding Trees
