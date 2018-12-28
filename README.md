@@ -41,16 +41,16 @@ user@your-machine:~directory/freetrees$ python crud.py
 ## Tasking List
 
 - Improve database API
-	- [] Update functions
-	- [] Delete functions
-	- [] Alternate functions
-	- [] List functions
-	- [] Count functions
-	- [] Security improvements
+	- [ ] Update functions
+	- [ ] Delete functions
+	- [ ] Alternate functions
+	- [ ] List functions
+	- [ ] Count functions
+	- [ ] Security improvements
 - Improve instalation
-	- [] config.js generation during instalation
-- [] Create an Original Icon
-- [] Develop search with Nominatim API
+	- [ ] config.js generation during instalation
+- [ ] Create an Original Icon
+- [ ] Develop search with Nominatim API
 
 ## Contributing
 
