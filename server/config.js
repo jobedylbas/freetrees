@@ -4,5 +4,4 @@ module.exports = {
 	defaultDatabase: 'freetrees',
 	locationsCol: 'locals',
 	plantsInfoCol: 'plantsinfo',
-	authorCol: 'authors'
 }

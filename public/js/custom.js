@@ -6,9 +6,10 @@ const dafaultCenter = [-30.03, -51.19],
 // Function to markers events
 const onMarkerClick = function(e){
     let popup = e.target.getPopup();
-    console.log(popup);
+    //console.log(popup.getLatLng().lat, popup.getLatLng().lng);
+    //console.log(popup);
     $.ajax({
-        url: '/get_info',
+        url: '/g-popup-inf',
         method: 'POST',
         datatype: 'json',
         data: {'lat': popup.getLatLng().lat, 'long': popup.getLatLng().lng},
@@ -24,12 +25,13 @@ const onMarkerClick = function(e){
 // Function that add the trees on map
 const putTrees = function(map){
     $.ajax({
-        url: '/get_trees',
+        url: '/get-trees',
         method: 'GET',
         success: function(data){
             for(tree in data.trees){
+                console.log(data.trees[tree])
                 let c = L.circle([data.trees[tree].lat, data.trees[tree].long],{
-                    color: 'red',
+                    color: data.trees[tree].color,
                     radius: 5
                 }).addTo(map);
 
@@ -52,13 +54,12 @@ $(document).ready(function (){
         case '/about':
             $('#about-link').addClass('active');
             $('#about-link').siblings().removeClass('active');
-            break;
-        case '/contact':
-            $('#contact-link').addClass('active');
-            $('#contact-link').siblings().removeClass('active');
+        case '/stats':
+            $('#stats-link').addClass('active');
+            $('#stats-link').siblings().removeClass('active');
             break;
         default:
-        break;
+            break;
     }
 
     // Home
@@ -96,7 +97,7 @@ $(document).ready(function (){
         
         // Create the chart with plants
         $.ajax({
-            url: '/chart_data',
+            url: '/chart-data',
             method: 'GET',
             success: function(data){
                 let chart = new Chart(ctx, {
@@ -105,9 +106,9 @@ $(document).ready(function (){
                     
                     // The data for our dataset
                     data: {
-                        labels: data.list.map(item => item['_id']),
+                        labels: data.list.map(item => item['_id'].name),
                         datasets: [{
-                            backgroundColor: colors.slice(0, data.list.length),
+                            backgroundColor: data.list.map(item => item['_id'].color),
                             data: data.list.map(item => item.count)
                         }]
                     },
@@ -128,14 +129,15 @@ $(document).ready(function (){
 
                     if(activePoint[0]){
                         let key = activePoint[0]['_chart'].config.data.labels[activePoint[0]['_index']];
+                        console.log(key);
                         $.ajax({
-                            url: '/get_info',
+                            url: '/g-plant-inf',
                             method: 'POST',
                             dataType: 'json',
-                            data: {'key': key},
+                            data: {'name': key},
                             success: function(data){
                                 console.log(data);
-                                getElementById('plant-title').textContent = key;
+                                document.getElementById('plant-name').textContent = key;
                             }
                         })
                     }

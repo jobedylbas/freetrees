@@ -63,7 +63,7 @@ DB.prototype.getAllLocations = function(coll){
 					else{
 						data = [];
 						result.forEach(function(item){
-							data.push({'lat': item.lat, 'long': item.long});
+							data.push({'lat': item.lat, 'long': item.long, 'color': item.color});
 						});
 						resolve(data);	
 					}
@@ -85,7 +85,7 @@ DB.prototype.getFreqPlants = function(coll){
 				collection.aggregate([
 					{
 						$group:{
-							_id: '$name', count:{$sum:1}
+							_id: { name: '$name', color: '$color'}, count:{$sum:1}
 						},
 
 					},
@@ -101,13 +101,14 @@ DB.prototype.getFreqPlants = function(coll){
 					}
 					else{
 						let count = 0;
+						//console.log(result);
 						for (data in result){
-							count = count + result[data].count;
+						 	count = count + result[data].count;
 						}
 
 						if(result.length > 7)
 							result.slice(0,7);
-
+						
 						resolve(result);
 					}
 				})
@@ -125,28 +126,65 @@ DB.prototype.getInfo = function(req, coll){
 				reject(error.message);
 			}
 			else{
-				collection.find({}, {lat: req.lat, long: req.long}).toArray(function(err, result){
-					if(err){
-						console.log('Error finding data: '+ err.message);
-						reject(err.message);
-					}
-					else{
-						console.log(result)
-						if(result.length === 0){
-							reject('Empty search.')
+				//console.log(req)
+				collection.findOne({'name': req.body.name},
+					function(err, res){
+						if(err){
+							console.log(err);
+							reject('Error finding data: '+ err.message);
 						}
-						else{
+						if(res){
+							// console.log('Db find data.');
 							resolve(
 								{
-									'name': result[0].name,
-									'harvesttime': result[0].harvesttime,
-									'cientificname': result[0].scientficname,
-									'link': result[0].link
+									'name': res.name,
+									'harvesttime': res.harvestseason,
+									'sciname': res.sciname,
+									'url': res.url
 								}
-							);	
+
+							);
 						}
-					}
-				})
+						else{
+							// console.log(res);
+							reject('Data not find.');
+						}
+					});
+			}
+		});
+	});
+}
+
+
+DB.prototype.getName = function(req, coll){
+	var _this = this;
+	return new Promise(function (resolve, reject){
+		_this.db.collection(coll, {strict: true}, function(error, collection){
+			if(error){
+				console.log('Could not access collection: ' + error.message);
+				reject(error.message);
+			}
+			else{
+				collection.findOne( 
+					{ 
+						$and: [
+							{'lat': parseFloat(req.body.lat)}, 
+							{'long': parseFloat(req.body.long)}]
+					},
+					function(err, res){
+						if(err){
+							console.log(err);
+							reject('Error finding data:' + err.message);
+						}
+						if(res){
+							// console.log(res);
+							resolve({'name': res.name});
+						}
+						else{
+							console.log(res)
+							reject('Data not find.');
+						}
+					});
 			}
 		});
 	});

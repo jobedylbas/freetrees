@@ -25,47 +25,7 @@ routes.get('/stats', function(req, res){
 	res.render('stats');
 });
 
-routes.get('/contact', function(req, res){
-	res.render('contact');
-});
-
-routes.post('/contact', function(req, res){
-	
-	const transporter = nodemailer.createTransport({
-	    host: 'smtp.ethereal.email',
-	    port: 587,
-	    secure: false,
-	    auth: {
-	        user: 'wbvn3gi6by4xk6f5@ethereal.email',
-	        pass: 'HjY31nvE5KEwg3qVff'
-	    }
-	});
-	
-	let mailOptions = {
-		from: req.body.from,
-		to: 'jobe.dylbas@gmail.com',
-		subject: req.body.subject,
-		text: req.body.message,
-	};
-	transporter.verify(function(err, success) {
-		if(err){
-			console.log(err);
-		}
-		else{
-			transporter.sendMail(mailOptions, (error, info)=>{
-				if(error){
-					console.log(error);
-				}
-				else{
-					console.log('email sent');
-				}
-			});
-		}
-		res.render('contact');
-	});
-})	
-
-routes.get('/get_trees', function(req, res){
+routes.get('/get-trees', function(req, res){
 	let db = new DB;
 	db.connect(config.defaultUri, config.defaultDatabase)
 	.then(
@@ -100,7 +60,7 @@ routes.get('/get_trees', function(req, res){
 });
 
 
-routes.get('/chart_data', function(req, res){
+routes.get('/chart-data', function(req, res){
 	let db = new DB;
 	db.connect(config.defaultUri, config.defaultDatabase)
 	.then(
@@ -133,20 +93,26 @@ routes.get('/chart_data', function(req, res){
 	)
 });
 
-routes.post('/get_info', function(req, res){
+routes.post('/g-popup-inf', function(req, res){
 	let db = new DB;
 	db.connect(config.defaultUri, config.defaultDatabase)
 	.then(
 		function(){
-			return db.getInfo(req, config.plantsInfoCol);
+			//console.log();
+			return db.getName(req, config.locationsCol);
 		}
 	)
 	.then(
+		function(sample){
+			//console.log(sample);
+			return db.getInfo({'body': sample}, config.plantsInfoCol);
+	})
+	.then(
 		function(info){
-			// console.log(info);
+			console.log(info);
 			return {
 				'success': true,
-				'list': info,
+				'item': info,
 				'error': ''
 			};
 		},
@@ -154,10 +120,10 @@ routes.post('/get_info', function(req, res){
 			console.log(error);
 			return {
 				'success': false,
-				'list': {
+				'item': {
 					'name': '',
 					'harvesttime': '',
-					'cientificname': '',
+					'sciname': '',
 					'link': ''
 				},
 				'error': error
@@ -173,6 +139,39 @@ routes.post('/get_info', function(req, res){
 	)
 });
 
+
+routes.post('/g-plant-inf', function(req, res){
+	let db = new DB;
+	db.connect(config.defaultUri, config.defaultDatabase)
+	.then(
+		function(){
+			return db.getInfo(req, config.plantsInfoCol);
+		}
+	)
+	.then(
+		function(info){
+			return {
+				'success': true,
+				'item': info,
+				'error': ''
+			};
+		},
+		function(error){
+			return {
+				'success': false,
+				'item': '',
+				'error': error
+			}
+		}
+	)
+	.then(
+		function(result){
+			db.close();
+			res.send(result);
+	})
+});
+
+// 404 Error
 routes.get('*', function(req, res){
   res.render('404');
 });

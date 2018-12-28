@@ -9,14 +9,32 @@ import pprint
 from pymongo import *
 
 # Global variables
+
+# Colors 
+# Structure Key: HTML value # Example
+colors = {
+	'orange':'#FFA500', # Orange
+	'purple': '#800080', # Grape
+	'tomato': '#FF6347', # Guava
+	'red': '#FF0000', # Strawberry
+	'darkred': '#8B0000', # Pitanga
+	'limegreen': '#32CD32', # Lemon
+	'green': '#008000', # Generic
+	'darkgreen': '#006400', # Another Generic
+	'gold': '#FFD700', # Lime
+	'saddlebrown': '#8B4513', # Kiwi
+	'hotpink': '#FF69B4' # Dragon Fruit
+}
+
+# In release delete this
 defaultUri = 'mongodb://localhost:27017'
 defaultDatabase = 'freetrees'
-localCol = 'locals'
-infoCol = 'plantsinfo'
+localCol = 'locals' # Responsable to keep all trees in the city
+infoCol = 'plantsinfo' # Responsable to keep the information about the city species
 
 
 def menu():
-	print("1. Insert Tree\n2. Insert type\n3. Delete Tree Type\n3. Drop Database\n4. Drop Collection\n5. Switch Database\n6. Count\n\n7.Exit")
+	print("1. Insert Tree\n2. Create specie\n3. Drop Database\n4. Drop Collection\n5. Switch Database\n6. Count\n\n7.Exit")
 	option = int(input("Select the option: "))
 	while(option not in range(1,7+1)):
 		option = int(input('Error: Invalid option.\nDigit a valid option: '))
@@ -52,64 +70,67 @@ def client(string):
 		print("Failed to connect to MongoDB.")
 		sys.exit()
 
+def create_specie():
+	new_specie = {}
+	new_specie['name'] = input('Specie popular name: ')
+	new_specie['sciname'] = input('Cientific name: ')
+	new_specie['harvestseason'] = input('Harvest season: ')
+	new_specie['url'] = input('Wiki URL: ')
+	new_specie['date'] = str(datetime.datetime.now())
+
+	pprint.pprint(new_specie)
+	return new_specie
+
 def create_tree():
 	new_tree = {}
 	new_tree['name'] = input('Tree name: ')
 	new_tree['lat'] = float(input('Tree lattitude: '))
 	new_tree['long'] = float(input('Tree longitude: '))
-	new_tree['addres'] = input('Tree addres: ')
-	new_tree['date'] = str(datetime.datetime.now())
-	new_tree['color'] = input('Color: ')
+	colorName = input('Color: ')
+	while colorName not in colors.keys():
+		print('Suported colors: ')
+		for color in colors.keys():
+			print(color)
+		colorName = input('Color: ')
+	new_tree['color'] = colors[colorName]
 	pprint.pprint(new_tree)
 	return new_tree
 
-def create_tree_type():
-	new_type = {}
-	new_type['name'] = input('Tree name: ')
-	new_type['cientific_name'] = input('Cientifc name: ')
-	new_type['harvesttime'] = input('Harvest time: ')
-	new_type['link'] = input('Wiki url: ')
-	return new_type
-
-def insert_type(db):
-	coll = db[infoCol]
-	tree_type = create_tree_type()
-	if(coll.find_one(tree_type)):
-		print('Failed to add this tree. This tree already exists.')
-		return
-	else:
-		pprint.pprint(tree_type)
-		insert_doc(coll, tree_type)
-		return
-
-def delete_type(db):
-	coll = db[infoCol]
-	tree_name = input('Tree name: ')
-	if(coll.find_one({'name': tree_name}) != None):
-		ans = input('Are u sure to delete this type? [y/N]').lower()
-		if(ans == 'y'):
-			try:
-				coll.remove({'name': tree_name})
-				print('Document removed.\n')
-			except:
-				print('Failed to reomve document.')
-	return
-
 def insert_tree(db):
-	coll = db[localCol]
+	localColl = db[localCol]
 	tree = create_tree()
-	if(coll.find_one(tree)):
-		print('Failed to add this tree. This tree already exists.')
+	specieColl = db[infoCol]
+	if specieColl.find_one({'name': tree['name']}):
+		if(localColl.find_one(tree)):
+			print('Failed to add this tree. This tree already exists.')
+			return
+		else:
+			insert_doc(localColl, tree)
+			return
+	else:
+		print('This Specie was not created yet. Please create now')	
+		try:
+			insert_specie(db)
+			insert_doc(localColl, tree)
+			return
+		except:
+			print('Failed to insert tree or specie.')
+			return
+
+def insert_specie(db):
+	specie = create_specie()
+	specieColl = db[infoCol]
+	if specieColl.find_one(specie):
+		print('Failed to add this specie. This specie already exists.')
 		return
 	else:
-		pprint.pprint(tree)
-		insert_doc(coll, tree)
-		return	
+		insert_doc(specieColl, specie)
+		return
 
 def insert_doc(coll, doc):
 	try:
 		_id = coll.insert_one(json.loads(json.dumps(doc))).inserted_id		
-		print('Document inserted. ID = '+ str(_id))
+		print('Document inserted at {}. ID = {}'.format(coll, str(_id)))
 		return
 	except:
 		print('Failed to insert in database.')
@@ -133,7 +154,6 @@ def db(conn):
 		print('Failed to switch to database')
 		die(conn)
 
-
 if __name__ == '__main__':
 	
 	exit = 0
@@ -146,8 +166,10 @@ if __name__ == '__main__':
 		exit = menu()
 		if(exit == 1):
 			insert_tree(database)
-		elif(exit == 2):
-			insert_type(database)
 		elif(exit == 3):
-			delete_type(database)
+			try:
+				connection.drop_database(defaultDatabase)
+				print('Database dropped with success.')
+			except:
+				print('Error when drop database.')
 	die(connection)

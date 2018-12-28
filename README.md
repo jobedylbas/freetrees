@@ -5,9 +5,9 @@
 
 ## About
 
-Inspired by [New York City Street Tree Map](https://tree-map.nycgovparks.org/) and [Projeto Pró-Frutas Nativas](http://frutaspoa.inga.org.br/) de Porto Alegre this project has the intention to map fruit plants on the public roads of Porto Alegre.
+Inspired by [New York City Street Tree Map](https://tree-map.nycgovparks.org/) and [Projeto Pró-Frutas Nativas](http://frutaspoa.inga.org.br/) de Porto Alegre this project has the intention to map fruit plants on the public roads of Porto Alegre and be extended for others cities.
 
-This project intends to provide information about the local flora and contribute to the local environmental education. 
+So on, this project intends to provide information about the local flora and contribute to the local environmental education. 
 
 Also, we believe that if you don't know your city, you cannot help to improve it, thus the data used on this application is free for general proposes and can be downloaded.
 
@@ -15,7 +15,7 @@ Also, we believe that if you don't know your city, you cannot help to improve it
 
 - Docker 18.03.1 or higher
 - Docker Compose 1.21.2 or higher
-- Python 3
+- Python 3.4 or higher
 
 ## Getting Started
 
@@ -37,3 +37,21 @@ www.localhost.com:3000
 user@your-machine:~directory/freetrees$ cd db
 user@your-machine:~directory/freetrees$ python crud.py
 ```
+
+## Tasking List
+
+[] Improve database API
+	[] Update functions
+	[] Delete functions
+	[] Alternate functions
+	[] List functions
+	[] Count functions
+	[] Security improvements
+[] Improve instalation
+	[] config.js is created during instalation
+[] Create an Original Icon
+[] Develop search with Nominatim API
+
+## Contributing
+
+- Use images with credits to the photographs
