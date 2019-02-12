@@ -1,7 +1,7 @@
 version: '2.2'
 services:
     app:
-      container_name: ft_node
+      container_name: free_tree_app
       restart: always
       build: ./
       command: bash -c "npm install && node app.js"
@@ -12,7 +12,7 @@ services:
       links:
         - database
     database:
-      container_name: tree_container
+      container_name: free_tree_database
       image: mongo:latest
       volumes:
         - ./data:/data/db

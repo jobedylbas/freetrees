@@ -47,13 +47,10 @@ $(document).ready(function (){
 
     // Add navbar highlight by url
     switch(window.location.pathname){
-        case '/download':
-            $('#download-link').addClass('active');
-            $('#download-link').siblings().removeClass('active');
-            break;
         case '/about':
             $('#about-link').addClass('active');
             $('#about-link').siblings().removeClass('active');
+            break;
         case '/stats':
             $('#stats-link').addClass('active');
             $('#stats-link').siblings().removeClass('active');
@@ -138,6 +135,9 @@ $(document).ready(function (){
                             success: function(data){
                                 console.log(data);
                                 document.getElementById('plant-name').textContent = key;
+                                document.getElementById('plant-sciname').textContent = data.item.sciname;
+                                document.getElementById('plant-url').textContent = data.item.url;
+                                document.getElementById('plant-url').href = data.item.url;
                             }
                         })
                     }
