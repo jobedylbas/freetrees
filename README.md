@@ -45,7 +45,6 @@ user@your-machine:~directory/freetrees$ python crud.py
 	- [ ] Alternate functions
 	- [ ] List functions
 	- [ ] Count functions
-	- [ ] Security improvements
 - [ ] Create an Original Icon
 - [ ] Develop search with Nominatim API
 
