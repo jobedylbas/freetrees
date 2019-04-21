@@ -3,14 +3,11 @@ const express = require('express'),
 	nodemailer = require('nodemailer'),
 	routes = express.Router(),
 	DB = require(path.resolve(path.join(__dirname, '..', 'db', 'dbConnection'))),
-	config = require(path.resolve(path.join(__dirname, 'config.js')));
+	config = require(path.resolve(path.join(__dirname, 'config.js'))),
+	rp = require('request-promise');
 
 routes.get('/', function(req, res){
 	res.render('index');
-});
-
-routes.post('/busca', function(req, res){
-	res.json({map: '/busca'});
 });
 
 routes.get('/download', function(req, res){
@@ -47,7 +44,7 @@ routes.get('/get-trees', function(req, res){
 				'success': false,
 				'trees': null,
 				'error': error
-			}; 
+			};
 		}
 	)
 	.then(

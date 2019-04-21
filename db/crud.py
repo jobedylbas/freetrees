@@ -10,7 +10,7 @@ from pymongo import *
 
 # Global variables
 
-# Colors 
+# Colors
 # Structure Key: HTML value # Example
 colors = {
 	'orange':'#FFA500', # Orange
@@ -52,7 +52,7 @@ def die(conn):
 		conn.close()
 	except:
 		pass
-	sys.exit()	
+	sys.exit()
 
 def client(string):
 	# To auth
@@ -70,31 +70,31 @@ def client(string):
 		print("Failed to connect to MongoDB.")
 		sys.exit()
 
-def create_specie():
-	new_specie = {}
-	new_specie['name'] = input('Specie popular name: ')
-	new_specie['sciname'] = input('Cientific name: ')
-	new_specie['harvestseason'] = input('Harvest season: ')
-	new_specie['url'] = input('Wiki URL: ')
-	new_specie['date'] = str(datetime.datetime.now())
+def createSpecie():
+	newSpecie = {}
+	newSpecie['popular_name'] = input('Specie popular name: ')
+	newSpecie['scientific_name'] = input('Scientific name: ')
+	newSpecie['harvest_season'] = input('Harvest season: ')
+	newSpecie['url'] = input('Wiki URL: ')
+	newSpecie['date'] = str(datetime.datetime.now())
 
-	pprint.pprint(new_specie)
-	return new_specie
+	pprint.pprint(newSpecie)
+	return newSpecie
 
 def create_tree():
-	new_tree = {}
-	new_tree['name'] = input('Tree name: ')
-	new_tree['lat'] = float(input('Tree lattitude: '))
-	new_tree['long'] = float(input('Tree longitude: '))
+	newTree = {}
+	newTree['name'] = input('Tree name: ')
+	newTree['lat'] = float(input('Tree lattitude: '))
+	newTree['long'] = float(input('Tree longitude: '))
 	colorName = input('Color: ')
 	while colorName not in colors.keys():
 		print('Suported colors: ')
 		for color in colors.keys():
 			print(color)
 		colorName = input('Color: ')
-	new_tree['color'] = colors[colorName]
-	pprint.pprint(new_tree)
-	return new_tree
+	newTree['color'] = colors[colorName]
+	pprint.pprint(newTree)
+	return newTree
 
 def insert_tree(db):
 	localColl = db[localCol]
@@ -108,7 +108,7 @@ def insert_tree(db):
 			insert_doc(localColl, tree)
 			return
 	else:
-		print('This Specie was not created yet. Please create now')	
+		print('This Specie was not created yet. Please create now')
 		try:
 			insert_specie(db)
 			insert_doc(localColl, tree)
@@ -118,7 +118,7 @@ def insert_tree(db):
 			return
 
 def insert_specie(db):
-	specie = create_specie()
+	specie = createSpecie()
 	specieColl = db[infoCol]
 	if specieColl.find_one(specie):
 		print('Failed to add this specie. This specie already exists.')
@@ -129,7 +129,7 @@ def insert_specie(db):
 
 def insert_doc(coll, doc):
 	try:
-		_id = coll.insert_one(json.loads(json.dumps(doc))).inserted_id		
+		_id = coll.insert_one(json.loads(json.dumps(doc))).inserted_id
 		print('Document inserted at {}. ID = {}'.format(coll, str(_id)))
 		return
 	except:
@@ -155,9 +155,9 @@ def db(conn):
 		die(conn)
 
 if __name__ == '__main__':
-	
+
 	exit = 0
-	
+
 	connection = conn()
 
 	database = db(connection)

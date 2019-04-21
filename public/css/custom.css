@@ -12,8 +12,6 @@ main{
 	background-size: cover;
 	opacity: 0.9;
 	height: 93%;
-	-webkit-filter: brightness(90%) contrast(95%);
-	filter: brightness(90%) contrast(95%);
 }
 
 .stats-chart{
