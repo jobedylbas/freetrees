@@ -106,8 +106,8 @@ DB.prototype.getFreqPlants = function(coll){
 						 	count = count + result[data].count;
 						}
 
-						if(result.length > 7)
-							result.slice(0,7);
+						if(result.length > 5)
+							result.slice(0,5);
 						
 						resolve(result);
 					}
@@ -117,7 +117,7 @@ DB.prototype.getFreqPlants = function(coll){
 	});
 }
 
-DB.prototype.getInfo = function(req, coll){
+DB.prototype.getInfo = function(query, coll){
 	var _this = this;
 	return new Promise(function (resolve, reject){
 		_this.db.collection(coll, {strict: true}, function(error, collection){
@@ -127,7 +127,7 @@ DB.prototype.getInfo = function(req, coll){
 			}
 			else{
 				//console.log(req)
-				collection.findOne({'name': req.body.name},
+				collection.findOne(query,
 					function(err, res){
 						if(err){
 							console.log(err);
@@ -156,7 +156,7 @@ DB.prototype.getInfo = function(req, coll){
 }
 
 
-DB.prototype.getName = function(req, coll){
+DB.prototype.getName = function(query, coll){
 	var _this = this;
 	return new Promise(function (resolve, reject){
 		_this.db.collection(coll, {strict: true}, function(error, collection){
@@ -168,8 +168,8 @@ DB.prototype.getName = function(req, coll){
 				collection.findOne( 
 					{ 
 						$and: [
-							{'lat': parseFloat(req.body.lat)}, 
-							{'long': parseFloat(req.body.long)}]
+							{'lat': parseFloat(query.lat)}, 
+							{'long': parseFloat(query.long)}]
 					},
 					function(err, res){
 						if(err){

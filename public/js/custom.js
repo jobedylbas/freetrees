@@ -23,7 +23,7 @@ const putTrees = function(map){
 
 								    $.ajax({
 								        url: '/g-popup-inf',
-								        method: 'POST',
+								        method: 'GET',
 								        datatype: 'json',
 								        data: {'lat': popup.getLatLng().lat, 'long': popup.getLatLng().lng},
 								        success: function(result){
@@ -148,11 +148,10 @@ $(document).ready(function (){
                         console.log(key);
                         $.ajax({
                             url: '/g-plant-inf',
-                            method: 'POST',
+                            method: 'GET',
                             dataType: 'json',
                             data: {'name': key},
                             success: function(data){
-                                console.log(data);
                                 document.getElementById('plant-name').textContent = key;
                                 document.getElementById('plant-sciname').textContent = data.item.sciname;
                                 document.getElementById('plant-url').textContent = data.item.url;

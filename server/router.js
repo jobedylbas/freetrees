@@ -90,13 +90,12 @@ routes.get('/chart-data', function(req, res){
 	)
 });
 
-routes.post('/g-popup-inf', function(req, res){
+routes.get('/g-popup-inf', function(req, res){
 	let db = new DB;
 	db.connect(config.defaultUri, config.defaultDatabase)
 	.then(
 		function(){
-			//console.log();
-			return db.getName(req, config.locationsCol);
+			return db.getName(req.query, config.locationsCol);
 		}
 	)
 	.then(
@@ -137,12 +136,12 @@ routes.post('/g-popup-inf', function(req, res){
 });
 
 
-routes.post('/g-plant-inf', function(req, res){
+routes.get('/g-plant-inf', function(req, res){
 	let db = new DB;
 	db.connect(config.defaultUri, config.defaultDatabase)
 	.then(
 		function(){
-			return db.getInfo(req, config.plantsInfoCol);
+			return db.getInfo(req.query, config.plantsInfoCol);
 		}
 	)
 	.then(
