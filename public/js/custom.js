@@ -54,10 +54,15 @@ const search = function(e) {
 
 		$.getJSON('http://nominatim.openstreetmap.org/search?format=json&limit=1&q=' + encodeURIComponent(query),
 		function(json) {
-			console.log(json);
-			map.flyTo([json[0].lat, json[0].lon], 18, {
-				 animate: true, duration: 1.5 });
-		  });
+			if (json[0].type == "city") {
+				map.flyTo([json[0].lat, json[0].lon], defaultZoom, {
+					 animate: true, duration: 1.5 });
+			}
+			else {
+				map.flyTo([json[0].lat, json[0].lon], 18, {
+					 animate: true, duration: 1.5 });
+			}
+		});
 	}
 }
 
