@@ -10,7 +10,6 @@ const putTrees = function(map){
         method: 'GET',
         success: function(data){
             for(tree in data.trees){
-                console.log(data.trees[tree])
                 let c = L.circle([data.trees[tree].lat, data.trees[tree].long],{
                     color: data.trees[tree].color,
                     radius: 5
@@ -19,7 +18,6 @@ const putTrees = function(map){
 								// Add event to popups
                 c.bindPopup().on('click', function(e){
 								    let popup = e.target.getPopup();
-										console.log(e.target.getPopup());
 
 								    $.ajax({
 								        url: '/g-popup-inf',
@@ -47,7 +45,6 @@ const search = function(e) {
 	e.preventDefault();
 	if ($("#search-input").val().length > 0) {
 		const query = $("#search-input").val();
-		console.log(window.location.pathname);
 		if (window.location.pathname != '/'){
 			window.location.pathname = '/';
 		}
@@ -150,7 +147,6 @@ $(document).ready(function (){
                     if(activePoint[0]){
                         let key = activePoint[0]['_chart'].config.data.labels[activePoint[0]['_index']];
 
-                        console.log(key);
                         $.ajax({
                             url: '/g-plant-inf',
                             method: 'GET',

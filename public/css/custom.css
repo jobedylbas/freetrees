@@ -10,7 +10,7 @@ main{
 	background-image: url("../img/poa.jpg");
 	background-repeat: no-repeat;
 	background-size: cover;
-	opacity: 0.9;
+	/* opacity: 0.9; */
 	height: 93%;
 }
 

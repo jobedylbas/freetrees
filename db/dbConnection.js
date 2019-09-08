@@ -65,7 +65,7 @@ DB.prototype.getAllLocations = function(coll){
 						result.forEach(function(item){
 							data.push({'lat': item.lat, 'long': item.long, 'color': item.color});
 						});
-						resolve(data);	
+						resolve(data);
 					}
 				});
 			}
@@ -108,7 +108,7 @@ DB.prototype.getFreqPlants = function(coll){
 
 						if(result.length > 5)
 							result.slice(0,5);
-						
+
 						resolve(result);
 					}
 				})
@@ -126,15 +126,14 @@ DB.prototype.getInfo = function(query, coll){
 				reject(error.message);
 			}
 			else{
-				//console.log(req)
-				collection.findOne(query,
+
+				collection.findOne(query.body,
 					function(err, res){
 						if(err){
 							console.log(err);
 							reject('Error finding data: '+ err.message);
 						}
 						if(res){
-							// console.log('Db find data.');
 							resolve(
 								{
 									'name': res.name,
@@ -146,7 +145,6 @@ DB.prototype.getInfo = function(query, coll){
 							);
 						}
 						else{
-							// console.log(res);
 							reject('Data not find.');
 						}
 					});
@@ -165,10 +163,10 @@ DB.prototype.getName = function(query, coll){
 				reject(error.message);
 			}
 			else{
-				collection.findOne( 
-					{ 
+				collection.findOne(
+					{
 						$and: [
-							{'lat': parseFloat(query.lat)}, 
+							{'lat': parseFloat(query.lat)},
 							{'long': parseFloat(query.long)}]
 					},
 					function(err, res){
@@ -181,7 +179,7 @@ DB.prototype.getName = function(query, coll){
 							resolve({'name': res.name});
 						}
 						else{
-							console.log(res)
+							// console.log(res)
 							reject('Data not find.');
 						}
 					});
