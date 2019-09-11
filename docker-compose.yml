@@ -4,7 +4,6 @@ services:
       container_name: free_trees_app
       restart: always
       build: ./
-      command: bash -c "npm install && node app.js"
       volumes:
         - .:/usr/src/app/
       ports:
@@ -13,7 +12,7 @@ services:
         - database
     database:
       container_name: free_trees_database
-      image: mongo:latest
+      image: mongo:4.2-bionic
       volumes:
         - ./data:/data/db
       ports:

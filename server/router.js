@@ -92,7 +92,6 @@ routes.get('/chart-data', function(req, res){
 
 routes.get('/g-popup-inf', function(req, res){
 	let db = new DB;
-	console.log(req.query);
 	db.connect(config.defaultUri, config.defaultDatabase)
 	.then(
 		function(){
@@ -101,12 +100,12 @@ routes.get('/g-popup-inf', function(req, res){
 	)
 	.then(
 		function(sample){
-			// console.log(sample);
+			//console.log(sample);
 			return db.getInfo({'body': sample}, config.plantsInfoCol);
 	})
 	.then(
 		function(info){
-			// console.log(info);
+			console.log(info);
 			return {
 				'success': true,
 				'item': info,

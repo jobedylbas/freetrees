@@ -7,7 +7,7 @@ main{
 }
 
 .back{
-	background-image: url("../img/poa.jpg");
+	background-image: url("../img/background.png");
 	background-repeat: no-repeat;
 	background-size: cover;
 	/* opacity: 0.9; */
