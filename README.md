@@ -15,7 +15,6 @@ Also, we believe that if you don't know your city, you cannot help to improve it
 
 - Docker 18.03.1 or higher
 - Docker Compose 1.21.2 or higher
-- Python 3.4 or higher
 
 ## Getting Started
 
@@ -32,21 +31,7 @@ www.localhost.com:3000
 
 ## Adding Trees
 
-- There are an Python API on folder db, and you can use to access your database to add, delete and modify the trees.
- ```
-user@your-machine:~directory/freetrees$ cd db
-user@your-machine:~directory/freetrees$ python crud.py
-```
-
-## Tasking List
-
-- Improve database API
-	- [ ] Delete functions
-	- [ ] Alternate functions
-	- [ ] List functions
-	- [ ] Count functions
-- [ ] Create an Original Icon
-- [ ] Develop search with Nominatim API
+- We recommendo to use [MongoDB Compass](https://www.mongodb.com/products/compass) to manage your tree database.
 
 ## Contributing
 
