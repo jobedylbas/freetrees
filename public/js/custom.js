@@ -3,19 +3,21 @@
 const defaultCenter = [-30.03, -51.19],
 		defaultZoom = 13;
 let map = null
+
+
+
 // Function that add the trees on map
-const putTrees = function(map){
+const putTrees = function(map) {
     $.ajax({
         url: '/get-trees',
         method: 'GET',
-        success: function(data){
-            for(tree in data.trees){
-                let c = L.circle([data.trees[tree].lat, data.trees[tree].long],{
-                    color: data.trees[tree].color,
-                    radius: 5
-                }).addTo(map);
+        success: function(data) {
+            for(tree in data.trees) {
+                const emojiImg = twemoji.parse(data.trees[tree].emoji, { folder: 'svg', ext: '.svg' });
+                const icon = L.divIcon({  html: emojiImg, iconSize: 32, className: 'dummy' })
+                let c = L.marker([data.trees[tree].lat, data.trees[tree].long], { icon: icon }).addTo(map);
 
-								// Add event to popups
+				// Add event to popups
                 c.bindPopup().on('click', function(e){
 								    let popup = e.target.getPopup();
 
@@ -52,11 +54,11 @@ const search = function(e) {
 		$.getJSON('http://nominatim.openstreetmap.org/search?format=json&limit=1&q=' + encodeURIComponent(query),
 		function(json) {
 			if (json[0].type == "city") {
-				map.flyTo([json[0].lat, json[0].lon], defaultZoom, {
+				map.flyTo([json[0].lat, json[0].long], defaultZoom, {
 					 animate: true, duration: 1.5 });
 			}
 			else {
-				map.flyTo([json[0].lat, json[0].lon], 18, {
+				map.flyTo([json[0].lat, json[0].long], 18, {
 					 animate: true, duration: 1.5 });
 			}
 		});

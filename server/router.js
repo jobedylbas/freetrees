@@ -1,6 +1,5 @@
 const express = require('express'),
 	path = require('path'),
-	nodemailer = require('nodemailer'),
 	routes = express.Router(),
 	DB = require(path.resolve(path.join(__dirname, '..', 'db', 'dbConnection'))),
 	config = require(path.resolve(path.join(__dirname, 'config.js'))),

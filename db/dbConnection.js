@@ -63,7 +63,7 @@ DB.prototype.getAllLocations = function(coll){
 					else{
 						data = [];
 						result.forEach(function(item){
-							data.push({'lat': item.lat, 'long': item.long, 'color': item.color});
+							data.push({'lat': item.lat, 'long': item.long, 'emoji': item.emoji});
 						});
 						resolve(data);
 					}
