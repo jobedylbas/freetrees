@@ -1,9 +1,11 @@
-version: '2.2'
+version: '2.4'
 services:
     app:
       container_name: free_trees_app
       restart: always
-      build: ./
+      build:
+        context: ./
+        network: host
       volumes:
         - .:/usr/src/app/
         - /usr/src/app/node_modules
